@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vaporwave Chatbot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</head>
+<body>
+    <!-- <div id="clippy-container">
+        <img src="/static/clippy.png" alt="Clippy" id="clippy-svg"/>
+    </div> -->
+    <div class="container">
+        <h1 class="wordart">Vaporwave Chatbot</h1>
+        <label for="username">Username:</label>
+        <input type="text" id="username" placeholder="Enter your username">
+        <p>What's the vibe?</p>
+        <textarea id="user-input" placeholder="Type your message here..."></textarea>
+        <button id="generate-btn" onclick="generateResponse()">Generate Text</button>
+        <div id="response-container">
+            <p id="response"></p>
+        </div>     
+    </div>
+</body>
+</html>
