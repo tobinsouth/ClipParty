@@ -33,7 +33,7 @@ def printerHardcore(text, user, port):
     printer.feed(1)
     printer.print(text)
     printer.feed(1)
-    printer.print(f'OBEY, HUMAN {user.upper()}')
     printer.print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    printer.print(f'OBEY, HUMAN {user.upper()}')
     printer.feed(3)
     uart.close()
