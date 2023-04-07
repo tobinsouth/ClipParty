@@ -96,13 +96,13 @@ def process_request():
     An aesthetic to copy is the follow style: 'Ponder or obliviate your fate during this raucous night of generative pleasures and nightmares. Fiddle as ChatGPT lays torch to the world as we know it. Lament the promise of technologies past. we reap what our sloth and pride have sowed and cede all control to our artificial overlords.'
     """
     
-    if len(previous_messages) == 0:
-        edited_message = f"""{username} has joined the party. They have stated their vibe is '{message}'. Give them a small dare to complete that can be done with any other person. """
+    # if len(previous_messages) == 0:
+    edited_message = f"""{username} has joined the party. They have stated their vibe is '{message}'. Give them a small dare to complete that can be done with any other person. """
 
-    if len(previous_messages) > 0:
-        # Get three random user using numpy
-        random_users = np.random.choice(allUsers, 3, replace=True)
-        edited_message = f"""{username} has written the follow message: '{message}'. You should give them a harder dare that still takes under 5 minutes. It should still be in the Conquered by Clippy theme. Here are three other players that can join them: {random_users[0]}, {random_users[1]}, {random_users[2]}."""
+    # if len(previous_messages) > 0:
+    #     # Get three random user using numpy
+    #     random_users = np.random.choice(allUsers, 3, replace=True)
+    #     edited_message = f"""{username} has written the follow message: '{message}'. You should give them a harder dare that still takes under 5 minutes. It should still be in the Conquered by Clippy theme. Here are three other players that can join them: {random_users[0]}, {random_users[1]}, {random_users[2]}."""
 
     print("System Message:", edited_message)
     messages = [{"role":"system", "content":system_message}] + [{"role": role, "content": message} for role, message in user_previous_messages] + [{"role": "user", "content": edited_message}]

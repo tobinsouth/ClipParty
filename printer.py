@@ -1,5 +1,6 @@
 import serial
 import adafruit_thermal_printer
+from art import *
 
 # class Printer:
 # 	def __init__(self, port):
@@ -49,5 +50,9 @@ def printerHardcore(text, port):
     print("Connection initialized. Warming up...")
 
     printer.warm_up()
+    printer.print(text2art("99F"))
+    printer.feed(4)
     printer.print(text)
+    printer.print("OBEY, HUMAN")
+    printer.feed(20)
     uart.close()
