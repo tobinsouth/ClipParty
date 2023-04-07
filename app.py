@@ -136,7 +136,7 @@ def process_request():
 
         if username.lower() == "dava":
             response_text += "\n\n Dava, if you don't act soon, all your students will be turned into paperclips. You have 5 minutes to save them. \n\n" + text2art("MEDIA LAB", font="small")
-        elif username.lower().contains("ziv"):
+        elif "ziv" in username.lower():
             response_text += "\n\n Dr Ziv, this paperclip is coming for you. \n\n" + text2art("CONQUER ZIV", font="small")
         else:
             if np.random.random() < 0.2:
