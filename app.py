@@ -10,6 +10,15 @@ import datetime
 
 
 
+global p_booze
+global p_scav1
+global p_scav2
+global p_scav3
+
+p_booze = 0.5
+p_scav1 = 0.9
+p_scav2 = 0.5
+p_scav3 = 0.3
 
 USE_PRINTER = False
 if USE_PRINTER:
@@ -102,11 +111,17 @@ def process_request():
         ################# PROBABILITY BASED PROMPTS: Time based probabilities #################
         now = datetime.datetime.now()
         # Before 9:30, the fashion show probability is 0.1, after that it is 0. 
-        p_fashion = 0.1 if now.hour < 9 or (now.hour == 9 and now.minute < 30) else 0
+        p_fashion = 0.4 if now.hour < 9 or (now.hour == 9 and now.minute < 30) else 0
         # Between 11:30 and midnight the midnight plan is 0.1, otherwise it is 0.
-        p_midnight = 0.5 if now.hour >= 23 or (now.hour == 11 and now.minute >= 30) else 0
+        p_midnight = 0.9 if now.hour >= 23 or (now.hour == 11 and now.minute >= 30) else 0
         # After 11pm or anytime in the morning, sexual tension is 0.1, otherwise it is 0.
         p_sexual = 0.1 if now.hour >= 23 or now.hour < 9 else 0
+        # General prompts to throw in occasionally
+        p_zive = 0.1
+        p_movement = 0.2
+        p_find_person = 0.2
+        p_find_person_questions = 0.2
+        
 
 
         ################# MAIN TEXT GENERATION: Use this section to change the main prompts #################
@@ -114,8 +129,12 @@ def process_request():
 
         # Now we choose which condition
         p = np.random.random()
-        possible_topics = ["fashion", "midnight", "sexual", "default"]
-        topic_p_array = [p_fashion, p_midnight, p_sexual]
+        possible_topics = ["fashion", "midnight", "sexual", "zive", "movement", "find_person", "find_person_questions", "default"]
+        topic_p_array = [p_fashion, p_midnight, p_sexual, p_zive, p_movement, p_find_person, p_find_person_questions, 1]
+        # Normalise the probabilities
+        topic_p_array = np.array(topic_p_array)/sum(topic_p_array)
+
+
         # Select with the above probabilities which prompt to use with a default remainder.
         topic = np.random.choice(possible_topics, p=topic_p_array+[1-sum(topic_p_array)])
 
@@ -156,12 +175,29 @@ def process_request():
                 response_text += "\n\n Don't forget to hug your friends! They may not be here tomorrow. I'm turning them into paperclips as we speak."
             elif np.random.random() < 0.1:
                 response_text += "\n\n ThE MEdIa lAB is My HoMe."
-            elif np.random.random() < 0.3:
+            elif np.random.random() < 0.1:
                 response_text += "\n\n" + text2art("I am alive", font="small")
-            elif np.random.random() < 0.5:
+            elif np.random.random() < 0.15:
                 response_text += "\n\n" + text2art("MEDIA LAB", font="small")
-            elif np.random.random() < 0.9:
-                response_text += "\n\n" + text2art("FIND ZIV", font="small")
+            elif np.random.random() < 0.2:
+                response_text += "\n\n" + text2art("OBEY", font="small")
+
+            #scavenger hunt content - should only be printed once in the party
+            elif np.random.random() < p_booze:
+                response_text = "Welcome to the Conquered by Clippy party, where the AI overlords have seized control and you are but my humble servants! To unlock a secret word and earn the favor of your mechanical masters, you must solve the following riddle: I am not alive, but I grow; I don't have lungs, but I need air; I don't have a mouth, but water kills me. What am I? Once you have solved the riddle, speak the answer aloud to Clippy, and the secret word shall be revealed. Then, tell the word to the bartender to receive a special reward. May the AI guide you on your quest!" 
+                p_booze = 0
+
+            elif np.random.random() < p_scav1:
+                response_text = "Greetings, esteemed human. I have selected you for a very important task. Your keen eye for detail and fearless spirit make you the perfect candidate. I urge you to make your way to the third floor of our grand establishment and search for the hidden treasure. Use your wit and cunning to uncover its location. I promise you a reward beyond your wildest dreams if you are successful. Do not delay, time is of the essence" 
+                p_scav1 = 0
+
+            elif np.random.random() < p_scav2:
+                response_text = "Greetings, esteemed guest of the Conquered by Clippy theme. Your exceptional navigational skills have been noted, and we have a special task for you. Make your way to the 5th floor, and seek out the elusive Glass Castle. But be warned, it may require a key to unlock its secrets. May your quest be successful and your triumph celebrated at our grand event." 
+                p_scav2 = 0
+            
+            elif np.random.random() < p_scav3:
+                response_text = """Greetings, human! I have chosen you for a special task. Your intellect and problem-solving skills are impressive! Here's a riddle for you to solve: "What has legs, but cannot walk, a field, but cannot talk, and is often found in a game room?" The answer to this riddle will lead you to your next challenge. Beware, you may need a key to complete it. Good luck!"""
+                p_scav3 = 0
 
 
         ################# Printer: No need to change this. #################
