@@ -3,11 +3,11 @@
 We submit to our Clippy overlord to instruct us what to do at the party.
 
 ## TODO:
-- [ ] Add more clippies
-- [ ] Make them spin (very hard)
-- [ ] Update the style
-- [ ] Engineer system prompts
-- [ ] Target Users
-- [ ] Deploy
+- [x] Add more clippies
+- [x] Make them spin (very hard)
+- [x] Update the style
+- [x] Engineer system prompts
+- [x] Target Users
+- [X] Deploy
 
 We have less than 24 hours.
