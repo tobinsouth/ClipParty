@@ -1,14 +1,15 @@
-import JSConfetti from 'js-confetti'
-
+// import JSConfetti from 'js-confetti'
 
 async function generateResponse() {
-    const jsConfetti = new JSConfetti()
+    // const jsConfetti = new JSConfetti();
 
     const username = document.getElementById("username").value;
     const message = document.getElementById("user-input").value;
     const responseElement = document.getElementById("response");
 
-    const loadingContainer = document.getElementById("loading-container");
+    console.log(username, message);
+
+    const clippyContainer = document.getElementById("clippy-container");
 
 
     if (!username || !message) {
@@ -17,9 +18,9 @@ async function generateResponse() {
     }
     
     // Make button disabled while making the API call
-    document.getElementById("submit").disabled = true;
+    // document.getElementById("submit").disabled = true;
     // Show the spinning emoji while making the API call
-    loadingContainer.style.display = "flex";
+    clippyContainer.style.display = "flex";
 
     const requestOptions = {
         method: "POST",
@@ -31,14 +32,16 @@ async function generateResponse() {
     const data = await response.json();
 
     // Hide the spinning emoji after the API call is completed
-    loadingContainer.style.display = "none";
+    clippyContainer.style.display = "none";
     // Make button enabled after the API call is completed
-    document.getElementById("submit").disabled = false;
+    // document.getElementById("submit").disabled = false;
 
 
     responseElement.textContent = data.response;
 
+    console.log(data);
+
     // Trigger confetti
-    jsConfetti.addConfetti({emojis:['📎', '🔥']})
+    // jsConfetti.addConfetti({emojis:['📎', '🔥']})
 
 }

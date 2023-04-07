@@ -1,46 +1,78 @@
 body {
-    background-color: #a0a0a0;
+    background-image: url('/static/bliss.png');
+    background-size: cover;
+    background-position: center;
     font-family: 'Courier New', Courier, monospace;
+    color: #000;
+    text-shadow: 1px 1px 2px #000;
+  }
+
+
+#wordart {
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    font-size: 48px;
+    text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    text-align: center;
+    padding: 20px 0;
 }
+
 
 .container {
-    width: 80%;
+    max-width: 800px;
     margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 36px;
     text-align: center;
+    margin-bottom: 30px;
 }
 
-.wordart {
-    font-size: 48px;
-    text-shadow: 3px 3px #000000;
-    color: #ff00ff;
-    background-color: #00ffff;
-    border: 2px solid #000000;
+input[type="text"] {
+    padding: 5px;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 5px;
+    font-size: 14px;
+    resize: none;
+    height: 150px;
+    margin-bottom: 10px;
+}
+
+button {
     padding: 10px;
-}
-
-#username {
-    width: 100%;
-    margin-bottom: 10px;
-}
-
-#user-input {
-    width: 100%;
-    height: 100px;
-    margin-bottom: 10px;
-}
-
-#generate-btn {
-    background-color: #00ff00;
-    border: 2px solid #000000;
-    padding: 5px 10px;
+    font-size: 14px;
+    background-color: #008000;
+    color: #FFF;
+    border: none;
     cursor: pointer;
+    width: 100%;
 }
 
-#response-container {
-    margin-top: 20px;
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
 }
 
-
+#overlay img {
+    width: 150px;
+    height: 150px;
+}
 
 
 #clippy-container {
@@ -78,10 +110,10 @@ body {
       transform: rotate(359deg);
     }
   } 
-/* 
+
 @-webkit-keyframes rotation
 {
 0%   {}
 100% {-webkit-transform: rotate(-360deg);}
-} */
+}
 
