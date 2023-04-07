@@ -15,11 +15,12 @@
         <p>What messages to you have for our overlord. If this is your first time here, report your vibe. If your quest has completed, report back.</p>
         <textarea id="user-input" placeholder="Type your message here..."></textarea>
         <button id="generate-btn" id="submit" onclick="generateResponse()">Generate Text</button>
-        <div id="response-container">
+        <div id="response-container" style="white-space: pre-wrap;">
             <p id="response"></p>
         </div>     
     </div>
     <div id="clippy-container" style="display: none;">
+        <h2 class="loadingmessage">I'm LOADING</h2>
         <img src="/static/clippy.png" alt="Clippy" id="clippy-svg"/>
     </div>
 </body>

@@ -10,12 +10,19 @@ body {
 
 #wordart {
     font-family: 'Comic Sans MS', 'Comic Sans', cursive;
-    font-size: 48px;
+    font-size: 56px;
     text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
     text-align: center;
     padding: 20px 0;
 }
 
+#loadingmessage {
+    position: fixed;
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    font-size: 20px;
+    animation: rotation 2s  infinite;
+    -webkit-animation: rotation 1s  infinite;
+}
 
 .container {
     max-width: 800px;
@@ -88,11 +95,11 @@ button {
 }
 
 #clippy-svg {
-    width: 200px; /* Adjust the width as needed */
+    width: 500px; /* Adjust the width as needed */
     height: auto;
     /* animation: rotation 1s infinite; */
-    animation: rotation 5s  infinite;
-    /* -webkit-animation: rotation 1s linear 0s infinite; */
+    animation: rotation 2s  infinite;
+    -webkit-animation: rotation 1s  infinite;
 }
 
 /* @keyframes rotation
