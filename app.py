@@ -166,7 +166,7 @@ def process_request():
 
         ################# Printer: No need to change this. #################
         if USE_PRINTER:
-            printerHardcore(response_text, "COM3")
+            printerHardcore(response_text, username, "COM3")
             return jsonify({"response": ""})
         else:
             return jsonify({"response": response_text})

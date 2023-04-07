@@ -21,7 +21,7 @@ clip_small= """
             '\"\"\"
 """
 
-def printerHardcore(text, port):
+def printerHardcore(text, user, port):
     ThermalPrinter = adafruit_thermal_printer.get_printer_class(2.69)
     uart = serial.Serial(port, baudrate=19200, timeout=3000)
     printer = ThermalPrinter(uart, auto_warm_up=False)
@@ -33,6 +33,7 @@ def printerHardcore(text, port):
     printer.feed(1)
     printer.print(text)
     printer.feed(1)
-    printer.print("OBEY, HUMAN")
+    printer.print(f'OBEY, HUMAN {user.upper()}')
+    printer.print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     printer.feed(3)
     uart.close()
