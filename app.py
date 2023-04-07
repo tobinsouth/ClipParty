@@ -8,10 +8,7 @@ import numpy as np
 
 
 USE_PRINTER = False
-import printer
-
-if USE_PRINTER:
-    printerMachine = printer.Printer("COM3")
+from printer import printerHardcore
 
 app = Flask(__name__)
 
@@ -131,7 +128,7 @@ def process_request():
 
 
     if USE_PRINTER:
-        printerMachine.print(response_text)
+        printerHardcore(response_text, "COM3")
         return jsonify({"response": ""})
     else:
         return jsonify({"response": response_text})
