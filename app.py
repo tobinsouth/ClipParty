@@ -7,7 +7,7 @@ from googleapiclient.errors import HttpError
 import numpy as np
 
 
-USE_PRINTER = False
+USE_PRINTER = True
 from printer import printerHardcore
 
 app = Flask(__name__)
