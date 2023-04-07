@@ -1,3 +1,5 @@
 .DS_Store
 clippy*.json
 *creds.json
+
+*.pyc
