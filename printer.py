@@ -10,7 +10,7 @@ def printerHardcore(text, port):
     print("Connection initialized. Warming up...")
 
     printer.warm_up()
-    printer.print(text2art("99F"))
+    printer.print(text2art("99F", font='graffiti'))
     printer.feed(1)
     printer.print(text)
     printer.feed(1)
