@@ -6,14 +6,16 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 import numpy as np
 from art import *
-
 import datetime
-now = datetime.datetime.now()
+
+
 
 
 USE_PRINTER = False
 if USE_PRINTER:
     from printer import printerHardcore
+
+from message_generator import get_messages
 
 app = Flask(__name__)
 
@@ -67,7 +69,7 @@ def write_message_to_sheet(username, message, response):
         service = build('sheets', 'v4', credentials=creds)
         range_name = 'Sheet1!A:D'  # Adjust this if your sheet has a different name or range
 
-        time = now.strftime("%Y-%m-%d %H:%M:%S")
+        time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         values = [[username, 'user', message, time], [username, 'assistant', response, time]]
         body = {'values': values}
         
@@ -89,50 +91,61 @@ def process_request():
         message = data.get("message")
 
 
-        previous_messages = get_previous_messages(username)
-        allUsers = all_users(previous_messages)
-        user_previous_messages = get_only_user(previous_messages, username)
+        previous_messages = get_previous_messages(username) # This is all the previous messages in the app.
+        allUsers = all_users(previous_messages) # This is all the users that have participated in the app.
+        user_previous_messages = get_only_user(previous_messages, username) # This is the messages from THIS user.
 
-        if username.lower()=="first":
+        if username.lower()=="first": # This is a handy way to reset and use a new user.
             user_previous_messages = []
 
 
-        system_message = f"""You are a crazy quest maker at the Conquered by Clippy: Tales of Degenerative AI (evil AI takeover) party. In every message you will give a weird and specific dare to complete at the party related to people getting to know each other and doing absurd imaginative things. It should not require specific objects that might not be available. I should be possible with less than 4 people or one person. Use brief and angry language like you are an AI overlord. Make sure the task is in the theme of the party: conquered by clippy. Start every sentence with: 'It pleases me to see you do my bidding. Now, {username}, you will:' 
-         
-        An aesthetic to copy is the following style: 'Ponder or obliviate your fate during this raucous night of generative pleasures and nightmares. Fiddle as ChatGPT lays torch to the world as we know it. Lament the promise of technologies past. we reap what our sloth and pride have sowed and cede all control to our artificial overlords.'"""
-
-        
-        if len(previous_messages) == 0:
-            edited_message = f"""{username} has joined the party. They have stated their vibe is '{message}'. Give them a small dare to complete that can be done with any other person. """
-
-        if len(previous_messages) > 1 :
-            # Get three random user using numpy
-            edited_message = f"""{username} has written the follow message: '{message}'. Please respond to it and then you should give them a harder dare that still takes under 5 minutes. It should still be in the Conquered by Clippy theme."""
-
-            if len(allUsers) > 10:
-                random_users = np.random.choice(allUsers, 3, replace=True)
-                edited_message+= f"Here are three other players that may be able to join them: {random_users[0]}, {random_users[1]}, {random_users[2]}."
+        ################# PROBABILITY BASED PROMPTS: Time based probabilities #################
+        now = datetime.datetime.now()
+        # Before 9:30, the fashion show probability is 0.1, after that it is 0. 
+        p_fashion = 0.1 if now.hour < 9 or (now.hour == 9 and now.minute < 30) else 0
+        # Between 11:30 and midnight the midnight plan is 0.1, otherwise it is 0.
+        p_midnight = 0.1 if now.hour >= 23 or (now.hour == 11 and now.minute >= 30) else 0
+        # After 11pm or anytime in the morning, sexual tension is 0.1, otherwise it is 0.
+        p_sexual = 0.1 if now.hour >= 23 or now.hour < 9 else 0
 
 
-        messages = [{"role":"system", "content":system_message}] + [{"role": role, "content": message} for role, message in user_previous_messages] + [{"role": "user", "content": edited_message}]
+        ################# MAIN TEXT GENERATION: Use this section to change the main prompts #################
+        how_many_previous_messages = len(user_previous_messages)
 
+        # Now we choose which condition
+        p = np.random.random()
+        possible_topics = ["fashion", "midnight", "sexual", "default"]
+        topic_p_array = [p_fashion, p_midnight, p_sexual]
+        # Select with the above probabilities which prompt to use with a default remainder.
+        topic = np.random.choice(possible_topics, p=topic_p_array+[1-sum(topic_p_array)])
+
+        system_message, prompt_message = get_messages(username, topic, how_many_previous_messages, message) #### GO EDIT THE OTHER FILE
+
+        # This lets us give the names of three other players to the message prompt.
+        if (how_many_previous_messages > 1) and (len(allUsers) > 10) :
+            random_users = np.random.choice(allUsers, 3, replace=True)
+            prompt_message+= f"Here are three other players that may be able to join them: {random_users[0]}, {random_users[1]}, {random_users[2]}."
+
+
+        ################# API Call: No need to change this. #################
+
+        messages_for_api = [{"role":"system", "content":system_message}] + [{"role": role, "content": message} for role, message in user_previous_messages] + [{"role": "user", "content": prompt_message}]
         completion = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
-            messages=messages
+            messages=messages_for_api
         )
 
         response_text = completion.choices[0].message.content
-        # print("Response:", response_text)
 
         # Write the user input to the Google Sheet
-        rows_added = write_message_to_sheet(username, edited_message, response_text)
+        rows_added = write_message_to_sheet(username, prompt_message, response_text)
         if rows_added > 0:
             print(f"Successfully added {rows_added} row(s) to the sheet.")
         else:
             print("Failed to add the message to the sheet.")
 
-        # # Print the number of previous inputs found
-        # print(f"Number of previous inputs found: {len(previous_messages)}")
+ 
+        ################# Bonus Content: Things to add to the end (instead of prompt engineering them) #################
 
         if username.lower() == "dava":
             response_text += "\n\n Dava, if you don't act soon, all your students will be turned into paperclips. You have 5 minutes to save them. \n\n" + text2art("MEDIA LAB", font="small")
@@ -150,6 +163,8 @@ def process_request():
             elif np.random.random() < 0.9:
                 response_text += "\n\n" + text2art("FIND ZIV", font="small")
 
+
+        ################# Printer: No need to change this. #################
         if USE_PRINTER:
             printerHardcore(response_text, "COM3")
             return jsonify({"response": ""})
