@@ -99,7 +99,7 @@ def process_request():
     # if len(previous_messages) == 0:
     edited_message = f"""{username} has joined the party. They have stated their vibe is '{message}'. Give them a small dare to complete that can be done with any other person. """
 
-    # if len(previous_messages) > 0:
+    # if len(previous_messages) > 1:
     #     # Get three random user using numpy
     #     random_users = np.random.choice(allUsers, 3, replace=True)
     #     edited_message = f"""{username} has written the follow message: '{message}'. You should give them a harder dare that still takes under 5 minutes. It should still be in the Conquered by Clippy theme. Here are three other players that can join them: {random_users[0]}, {random_users[1]}, {random_users[2]}."""
