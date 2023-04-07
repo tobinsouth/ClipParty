@@ -3,3 +3,4 @@ clippy*.json
 *creds.json
 
 *.pyc
+__pycache__
