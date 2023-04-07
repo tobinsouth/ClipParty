@@ -104,7 +104,7 @@ def process_request():
         # Before 9:30, the fashion show probability is 0.1, after that it is 0. 
         p_fashion = 0.1 if now.hour < 9 or (now.hour == 9 and now.minute < 30) else 0
         # Between 11:30 and midnight the midnight plan is 0.1, otherwise it is 0.
-        p_midnight = 0.1 if now.hour >= 23 or (now.hour == 11 and now.minute >= 30) else 0
+        p_midnight = 0.5 if now.hour >= 23 or (now.hour == 11 and now.minute >= 30) else 0
         # After 11pm or anytime in the morning, sexual tension is 0.1, otherwise it is 0.
         p_sexual = 0.1 if now.hour >= 23 or now.hour < 9 else 0
 
